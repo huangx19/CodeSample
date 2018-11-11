@@ -9,7 +9,7 @@ import java.util.*;
 *A Hierarchy can have 0 or more childrens, which are also Hierarchy's
 *
 *
-*@author X.Huang
+*@author X. Huang
 *@version 1.0
 *@since 2018-11-10
 */
@@ -38,7 +38,7 @@ public class Hierarchy<T> {
 			throw new NullPointerException();
 
 		mData = root;
-		mId = mData.toString();
+		mId = generateId();
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class Hierarchy<T> {
 	*@return the Hierarchy with the same data; If there are multiple Hierarchy's have the same data, only one of 
 	*			them will be returned.
 	*
-	*@exception NullPointerException On data is null;
+	*@exception NullPointerException On data is <code>null</code>;
 	*/
 	public Hierarchy<T> get(T data) {
 		if (data == null)
@@ -129,6 +129,7 @@ public class Hierarchy<T> {
 	/**
 	* Add a new Hierarchy as a direct child of the current Hierarchy.
 	*
+	*
 	*@param data  the data to be held by the child Hierarchy
 	*
 	*@return the current Hierarchy
@@ -144,8 +145,20 @@ public class Hierarchy<T> {
 			mChildren = new ArrayList<>();
 		mChildren.add(child);
 		child.mParent = this;
-		child.mId = mId + "," + child.data().toString();
+		child.mId = child.generateId();
 
 		return this;
+	}
+
+	/**
+	* Generate a unique identifier for this Hierarachy.
+	*
+	*@return the id generated
+	*/
+	protected String generateId() {
+		String id = "" + Math.random();
+		if (mParent != null)
+			id = mParent.id() + id;
+		return id;
 	}
 }
